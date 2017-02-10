@@ -1,0 +1,28 @@
+<div class="card">
+	<h4 class="card-header">Sign Up</h4>
+	<div class="card-block">
+		<form class="form-group" [formGroup] = "userForm" (ngSubmit)="postUserForm()">
+			<div class="form-group">
+				<label for="userName">Name:</label>
+				<input type="text" class="form-control" formControlName="name" placeholder="Enter your Name">
+			</div>
+
+			<div class="form-group">
+				<label for="email">Email-ID:</label>
+				<input type="email" class="form-control" formControlName="email" placeholder="Enter your email-id">
+			</div>
+
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" class="form-control" formControlName="password" placeholder="Enter your password">
+			</div>
+
+			<div class="form-group">
+				<label for="phoneNumber">PhoneNumber:</label>
+				<input type="text" class="form-control" formControlName="number" placeholder="Enter your phoneNumber">
+			</div>
+			<toaster-container></toaster-container>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+</div>
