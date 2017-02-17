@@ -6,15 +6,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { ToasterModule, ToasterService} from 'angular2-toaster';
 
 import { AppComponent } from './app.component';
-import { NewUserComponent } from './new-user/new-user.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { NewUserService } from './new-user-service';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { AuthService } from './auth.service';
+import { ResestPasswordComponent } from './resest-password/resest-password.component';
+
 
 const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: '/newUser',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
 
@@ -24,22 +26,23 @@ const appRoutes: Routes = [
   },
 
   {
-    path: 'newUser',
-    component: NewUserComponent
+    path: 'userDashboard',
+    component: UserDashboardComponent
   },
 
   {
-    path: 'userDashboard',
-    component: UserDashboardComponent
-  }
+    path: 'resestPassword',
+    component: ResestPasswordComponent
+  },
+   
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewUserComponent,
     UserLoginComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    ResestPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     ToasterModule
   ],
-  providers: [NewUserService],
+  providers: [NewUserService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

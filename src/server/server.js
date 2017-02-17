@@ -30,17 +30,22 @@ app.post('/user', function (req, res) {
 	console.log(userModel);
 	userModel.save(function (err, userModel) {
 		if (err) return console.error(err);
-		res.status(200).json(userModel);
+		res.json({success: true, msg: 'Registration done Successfully.'});
 	});
 });
 
-app.post('/userLogin', function (req, res) {
-	UserModel.find({}, function(err, doc){
-		console.log(doc[0].email);
-		if (doc[0].email == req.body.email && doc[0].password == req.body.password) {
-			res.status(200).json(doc);
-		} else {
-			if (err) return console.error(err);
+app.post('/api/login', function (req, res) {
+	UserModel.findOne({
+		email: req.body.email
+	}, function(err, user){
+		if(user == null ){
+			res.json({success: false, msg: 'User not Found'});
+		}
+		else if(req.body.email == user.email && req.body.password == user.password) {
+			res.json({success: true, user: user});
+		}
+		else {
+			res.json({success: false, msg: 'Email and Password is invalid'});
 		}
 	});
 });
@@ -56,7 +61,7 @@ app.put('/updateProfile/:id', function(req, res) {
     UserModel.findOneAndUpdate({_id: req.params.id}, req.body, function(err) {
       if(err) return console.error(err);
       console.log("User Profile Updated Successfully");
-      res.sendStatus(200);
+      res.json({success: true, msg: '"User Profile Updated Successfully'});
 
     })
 });
@@ -67,8 +72,6 @@ app.delete('/deleteProfile/:id', function(req, res) {
       res.sendStatus(200);
     });
 });
-
-
 
  app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname,'/../../dist/index.html'));

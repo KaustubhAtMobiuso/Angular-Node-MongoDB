@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NewUserService } from '../new-user-service';
 import { ToasterModule, ToasterService} from 'angular2-toaster';
+import { AuthService } from '../auth.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
+
 
 @Component({
   selector: 'app-user-dashboard',
@@ -8,17 +12,32 @@ import { ToasterModule, ToasterService} from 'angular2-toaster';
   styleUrls: ['./user-dashboard.component.css']
 })
 export class UserDashboardComponent implements OnInit {
-  toast:any;
+  
   toastDelete:any;
 	user= [];
   isEditing= false;
   userUpdate = {};
-	constructor(private newUserService: NewUserService, private toasterService: ToasterService) {
+  userStatus:boolean;
+  loggedInUser: any;
+  successMessage: string;
+	constructor(
+    private newUserService: NewUserService,
+    private toasterService: ToasterService,
+    private authService: AuthService,
+    private router: Router
+  ) { 
+  }
 
-	}
-
-	ngOnInit() {
-		this.getAllRegisteredUser();
+    ngOnInit() {
+		  this.getAllRegisteredUser();
+      this.userStatus = this.authService.isLoggedIn();
+      if(this.userStatus == false) {
+        this.router.navigate(['/login']);
+      } else {
+        this.router.navigate(['/userDashboard']);
+      }
+      this.loggedInUser = localStorage.getItem('user');
+      console.log(this.loggedInUser);
   	}
 
   	getAllRegisteredUser() {
@@ -43,22 +62,23 @@ export class UserDashboardComponent implements OnInit {
     updateUserProfile(userValue) {
       console.log(userValue);
       this.newUserService.updateUserProfile(userValue).subscribe(
-      res => {
-        this.isEditing = false;
-        this.userUpdate = userValue;
-        this.popToast();
-      },
-      error => console.log(error)
-    );
+      res=>{
+          if(res.success) {
+            this.successMessage= res.msg;
+            location.reload();
+          }
+        })
     }
 
-    popToast() {
-      this.toast = {
-        body: 'User Profile Updated Successfully.',
-        showCloseButton: true,
-        tapToDismiss: false, 
-    };
-      this.toasterService.pop(this.toast);
+    postUserForm(userForm) {
+      console.log(userForm.value);
+      this.newUserService.postUserFormDetail(userForm.value).subscribe(
+        res=>{
+          if(res.success) {
+            this.successMessage= res.msg;
+            this.newUserService.sendRegistrationMail();
+          }
+        })
     }
 
     deleteUser(value) {

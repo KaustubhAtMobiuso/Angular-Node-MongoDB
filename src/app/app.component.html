@@ -1,10 +1,15 @@
 <div class="container">
-	<div class="navbar-collapse collapse justified" >
+	<div class="navbar-collapse collapse">
 		<ul class="nav navbar-nav">
-			<li class="active"><a routerLink="/login" routerLinkActive="active">Login</a></li>
-		</ul>
-		<ul class="nav navbar-nav">
-			<li class="active"><a routerLink="/newUser" routerLinkActive="active">New User</a></li>
+			<li class="active" *ngIf="!islogged">
+				<a routerLink="/login" routerLinkActive="active"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+			</li>
+			<li class="active" *ngIf="islogged">
+				<a routerLink="#" routerLinkActive="active"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+			</li>
+			<li class="active" *ngIf="islogged">
+				<a routerLinkActive="active" (click) ="logout()"><i class="fa fa-sign-out " aria-hidden="true"></i> Logout</a>
+			</li>
 		</ul>
 	</div>
 <router-outlet></router-outlet>

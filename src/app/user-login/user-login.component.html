@@ -1,17 +1,38 @@
-<div class="card">
-	<h4 class="card-header">Sign In</h4>
-	<div class="card-block">
-		<form class="form-group" [formGroup] = "loginForm" (ngSubmit)="userAuthenicate()">
-			<div class="form-group">
-				<label for="email">Email-ID:</label>
-				<input type="email" class="form-control" formControlName="email" placeholder="Enter your email-id">
-			</div>
-			<div class="form-group">
-				<label for="password">Password:</label>
-				<input type="password" class="form-control" formControlName="password" placeholder="Enter your password">
-			</div>
-			<toaster-container></toaster-container>
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
+<div class="card card-container">
+	<div *ngIf="error" class="alert alert-danger">
+  		<strong>{{error}}</strong>
 	</div>
+	<h3 style="text-align: center">Log In</h3>
+	<img id="profile-img" class="profile-img-card" src="../assets/user-icon-png-pnglogocom.png"/>
+<form #loginForm="ngForm" (ngSubmit)="userAuthenicate(loginForm)" class="form-horizontal">
+    <div class="form-group">
+      <div class="col-md-3">
+        <div class="input-group"> <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+          <input id="Email" name="email" type="email" placeholder="Enter Your Email" class="form-control input-md" ngModel required #email="ngModel">
+          	<div class="alert alert-danger" [hidden]= "email.valid || email.pristine">
+				Email is required
+			</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-3">
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+          <input id="password" name="password" type="password" placeholder="Enter Your Password" class="form-control input-md" ngModel required #password="ngModel">
+          	<div class="alert alert-danger" [hidden]= "password.valid || password.pristine">
+				Password is required
+			</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="Submit"></label>
+      <div class="col-md-4">
+        <button id="Submit" class="btn btn-success" type="Submit" [disabled]="!loginForm.valid">Submit</button>
+      </div>
+    </div>
+</form>
+<a routerLink="/resestPassword"  class="forgot-password" routerLinkActive="active">
+	Forgot Password ?
+</a>
 </div>

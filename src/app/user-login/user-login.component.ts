@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import { NewUserService } from '../new-user-service';
-import { ToasterModule, ToasterService} from 'angular2-toaster';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { AuthService } from '../auth.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-user-login',
@@ -10,59 +11,37 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./user-login.component.css']
 })
 export class UserLoginComponent implements OnInit {
-  toast:any;
-  toast1:any;
-	loginForm: FormGroup;
+    error: string;
+    userStatus: boolean;
   	constructor(
-        private fb: FormBuilder,
         private newUserService: NewUserService,
-        private toasterService: ToasterService,
-        private router: Router
-      ) {
-          this.toasterService = toasterService;
-    }
+        private router: Router,
+        private authService: AuthService
+      ) {}
 
   	ngOnInit() {
-  		this.loginForm = this.fb.group({
-  			email: new FormControl('', Validators.required),
-  			password: new FormControl('', Validators.required) 
-  		});
-  	
+      this.userStatus = this.authService.isLoggedIn();
+      if(this.userStatus == false) {
+        this.router.navigate(['/login']);
+      } else {
+        this.router.navigate(['/userDashboard']);
+      }
+  		
   	}
 
-  	userAuthenicate() {
-  		console.log(this.loginForm.value);
-      this.newUserService.checkUserAuthenication(this.loginForm.value).subscribe(
+  	userAuthenicate(loginForm) {
+  		console.log(loginForm.value);
+      this.authService.signin(loginForm.value.email, loginForm.value.password).subscribe(
         res=>{
-          let formValue = res.json();
-          console.log(formValue);
-          this.popToast();
-        }, 
-        error=> {
-          console.log(error);
-          this.popToastFailed();
-        }
-        );
+          console.log(res);
+          if (res.success) {
+            this.authService.saveState(res.user.name);
+            this.router.navigate(['/userDashboard']);
+          } else {
+            this.error = res.msg;
+          }
+          })
   	}
-
-    popToast() {
-      this.toast = {
-        body: 'Login Successfully.',
-        showCloseButton: true,
-        tapToDismiss: false, 
-    };
-      this.toasterService.pop(this.toast);
-      this.router.navigate(['/userDashboard']);
-    }
-
-    popToastFailed() {
-      this.toast1 = {
-        body: 'Login Failed.',
-        showCloseButton: true,
-        tapToDismiss: false, 
-    };
-      this.toasterService.pop(this.toast1);
-    }
-    }
+}
 
 
