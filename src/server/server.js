@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var email   = require('emailjs/email');
 
 var app = express();
 var UserModel = require('./userModel.js');
@@ -11,7 +12,7 @@ app.set('port', process.env.PORT || 3000);
 app.use('/', express.static(__dirname + '/../../dist'));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://test:test@ds149998.mlab.com:49998/demo');
 
@@ -30,7 +31,7 @@ app.post('/user', function (req, res) {
 	console.log(userModel);
 	userModel.save(function (err, userModel) {
 		if (err) return console.error(err);
-		res.json({success: true, msg: 'Registration done Successfully.'});
+		res.json({success: true, msg: 'Registration done Successfully.', userModel: userModel});
 	});
 });
 
@@ -72,6 +73,48 @@ app.delete('/deleteProfile/:id', function(req, res) {
       res.sendStatus(200);
     });
 });
+
+app.post('/reset', function(req, res) {
+	UserModel.findOne({
+		email: req.body.email
+	}, function(err, user){
+		console.log(user);
+		if(user == null ){
+			res.json({success: false, msg: 'Email not Found'});
+		}
+		else {
+			res.json({success: true, msg: 'Email found', user: user});
+		}
+	});
+});
+
+app.put('/updatePassword', function(req, res) {
+    UserModel.findOneAndUpdate({email: req.body.email}, req.body, function(err) {
+      if(err) return console.error(err);
+      console.log("User Profile Updated Successfully");
+      res.json({success: true, msg: 'Password Updated Successfully Log In Now'});
+    })
+});
+/*app.post('/sendMail', function(req, res){
+	console.log(req.body);
+	var server = email.server.connect({
+		user: 'kmkaustubh11@gmail.com',
+		password: 'i love u',
+		host: 'smtp.gmail.com',
+		ssl: true,
+		port: 587
+	});
+	server.send({
+		text: "Welcome to my site",
+		from: "kmkaustubh11@gmail.com",
+		to: req.body.email,
+		subject: "Welcome Mail"
+	}, function(err, message){
+		if(err)
+		console.log(err);
+		return res.json({success: true, msg: 'sent'});	
+	});
+});*/
 
  app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname,'/../../dist/index.html'));

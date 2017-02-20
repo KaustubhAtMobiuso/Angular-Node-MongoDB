@@ -46,4 +46,12 @@ export class AuthService {
 		}
 		return this.auth;
 	}
+
+	emailCheck(email) {
+		return this.http.post('/reset', email).map(res => res.json());
+	}
+
+	updatePassword(userPassword) {
+		return this.http.put('/updatePassword', JSON.stringify(userPassword), this.options).map(res => res.json());
+	}
 }

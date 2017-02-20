@@ -12,20 +12,22 @@ import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
   styleUrls: ['./user-dashboard.component.css']
 })
 export class UserDashboardComponent implements OnInit {
-  
-  toastDelete:any;
+
 	user= [];
   isEditing= false;
   userUpdate = {};
   userStatus:boolean;
   loggedInUser: any;
   successMessage: string;
+  birthday: any;
 	constructor(
     private newUserService: NewUserService,
     private toasterService: ToasterService,
     private authService: AuthService,
     private router: Router
   ) { 
+    this.birthday = new Date();
+    console.log(this.birthday);
   }
 
     ngOnInit() {
@@ -76,7 +78,10 @@ export class UserDashboardComponent implements OnInit {
         res=>{
           if(res.success) {
             this.successMessage= res.msg;
-            this.newUserService.sendRegistrationMail();
+            window.alert(this.successMessage);
+            location.reload();
+            //console.log(res.userModel.email);
+            //this.newUserService.sendRegistrationMail(res.userModel.email);
           }
         })
     }
@@ -88,20 +93,9 @@ export class UserDashboardComponent implements OnInit {
         res => {
           let pos = this.user.map(elem => { return elem._id; }).indexOf(value._id);
           this.user.splice(pos, 1);
-          this.deleteUserPopToast();
         },
         error => console.log(error)
       );
     }
   }
-
-    deleteUserPopToast() {
-      this.toastDelete = {
-        body: 'User Deleted Successfully.',
-        showCloseButton: true,
-        tapToDismiss: false, 
-    };
-      this.toasterService.pop(this.toastDelete);
-    }
-
 }
