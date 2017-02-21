@@ -1,96 +1,102 @@
-<div class="card">
-  <h4 class="card-header">Welcome {{loggedInUser}} <i class="fa fa-user" aria-hidden="true"></i></h4>
-</div>
-<div *ngIf="successMessage" class="alert alert-success">
-  <strong>{{successMessage}}</strong>
-</div>
-
-<div class="card" >
-  <div class="card-block">
-    <table class="table table-bordered table-striped">
-      <thead class="thead-default">
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Number</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody *ngIf="user.length === 0">
-        <tr>
-          <td colspan="5">There are user registered in the DB. Add a new user below.</td>
-        </tr>  
-      </tbody>
-      <tbody *ngIf="!isEditing">
-        <tr *ngFor="let getuser of user">
-          <td>{{getuser.name}}</td>
-          <td>{{getuser.email}}</td>
-          <td>{{getuser.password}}</td>
-          <td>{{getuser.number}}</td>
-          <td>
-            <button class="btn btn-sm btn-warning" (click)="enableEditing(getuser)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deleteUser(getuser)"><i class="fa fa-trash"></i> Delete</button>
-          </td>
-        </tr>  
-      </tbody>
-      <tbody *ngIf="isEditing">
-        <tr>
-          <td colspan="5">
-            <form class="form-inline" #form="ngForm" (ngSubmit)="updateUserProfile(userUpdate)" style="display:inline">
-              <td>
-                  <input class="form-control name" type="text" name="name" [(ngModel)]="userUpdate.name" placeholder="Enter your new Name" required>
-              </td>
-              <td>
-                <input class="form-control email" type="email" name="email" [(ngModel)]="userUpdate.email" placeholder="Enter your new email"  required>
-              </td>
-              <td>
-                <input class="form-control password" type="password" name="password" [(ngModel)]="userUpdate.password" placeholder="Enter your new password" required>
-              </td>
-              <td>
-                <input class="form-control number" type="number" name="number" [(ngModel)]="userUpdate.number" placeholder="Enter your new number" required>
-              </td>
-              <button class="btn btn-sm btn-primary save" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
-            </form>
-            <button class="btn btn-sm btn-warning cancel" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="container">
+  <div class="card">
+    <h4 class="card-header">Welcome {{loggedInUser}} <i class="fa fa-user" aria-hidden="true"></i></h4>
   </div>
-</div> 
-<div class="card" *ngIf="!isEditing">
-  <h4 class="card-header">Add new user <i class="fa fa-user" aria-hidden="true"></i></h4>
-  <div class="card-block">
-    <form #userForm="ngForm" class="form-block"  (ngSubmit)="postUserForm(userForm)">
-      <div class="form-group">
-        <label for="Name">Name:</label>
-        <input type="text" class="form-control" placeholder="Enter your Name" name="name" ngModel  #name="ngModel" required>
-        <div class="alert alert-danger" [hidden]= "name.valid || name.pristine">
-          Name is required
+  <div *ngIf="successMessage" class="alert alert-success">
+    <strong>{{successMessage}}</strong>
+  </div>
+
+  <div class="card">
+    <div class="card-block">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-default">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Number</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="user.length === 0">
+          <tr>
+            <td colspan="5">There are user registered in the DB. Add a new user below.</td>
+          </tr>  
+        </tbody>
+        <tbody *ngIf="!isEditing">
+          <tr *ngFor="let getuser of user">
+            <td>{{getuser.name}}</td>
+            <td>{{getuser.email}}</td>
+            <td>{{getuser.password}}</td>
+            <td>{{getuser.number}}</td>
+            <td>
+              <button class="btn btn-sm btn-warning" (click)="enableEditing(getuser)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deleteUser(getuser)"><i class="fa fa-trash"></i> Delete</button>
+            </td>
+          </tr>  
+        </tbody>
+        <tbody *ngIf="isEditing">
+          <tr>
+            <td colspan="5">
+              <form class="form-inline" #form="ngForm" (ngSubmit)="updateUserProfile(userUpdate)" style="display:inline">
+                <td>
+                    <input class="form-control name" type="text" name="name" [(ngModel)]="userUpdate.name" placeholder="Enter your new Name" required>
+                </td>
+                <td>
+                  <input class="form-control email" type="email" name="email" [(ngModel)]="userUpdate.email" placeholder="Enter your new email"  required>
+                </td>
+                <td>
+                  <input class="form-control password" type="password" name="password" [(ngModel)]="userUpdate.password" placeholder="Enter your new password" required>
+                </td>
+                <td>
+                  <input class="form-control number" type="number" name="number" [(ngModel)]="userUpdate.number" placeholder="Enter your new number" required>
+                </td>
+                <button class="btn btn-sm btn-primary save" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+              </form>
+              <button class="btn btn-sm btn-warning cancel" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> 
+  <div class="card" *ngIf="!isEditing">
+    <h4 class="card-header">Add new user <i class="fa fa-user" aria-hidden="true"></i></h4>
+    <div class="card-block">
+      <form #userForm="ngForm" class="form-block"  (ngSubmit)="postUserForm(userForm)">
+        <div class="form-group">
+          <md-input-container>
+            <input type="text" class="form-control" mdInput placeholder="Enter your Name" name="name" ngModel  #name="ngModel" required>
+            <div class="alert alert-danger" [hidden]= "name.valid || name.pristine">
+              Name is required
+            </div>
+          </md-input-container>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="Email">Email:</label>
-        <input type="email" class="form-control" placeholder="Enter your Email" name="email" ngModel #email="ngModel" required>
-        <div class="alert alert-danger" [hidden]= "email.valid || email.pristine">
-          Email is required
+        <div class="form-group">
+          <md-input-container>
+            <input type="email" class="form-control" mdInput placeholder="Enter your Email" name="email" ngModel #email="ngModel" required>
+            <div class="alert alert-danger" [hidden]= "email.valid || email.pristine">
+              Email is required
+            </div>
+          </md-input-container>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="Password">Password:</label>
-        <input type="password" class="form-control" placeholder="Enter your Password" name="password" ngModel #password="ngModel" required>
-        <div class="alert alert-danger" [hidden]= "password.valid || password.pristine">
-          Password is required
+        <div class="form-group">
+          <md-input-container>
+            <input type="password" class="form-control" mdInput placeholder="Enter your Password" name="password" ngModel #password="ngModel" required>
+            <div class="alert alert-danger" [hidden]= "password.valid || password.pristine">
+              Password is required
+            </div>
+          </md-input-container>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="phoneNumber">PhoneNumber:</label>
-        <input type="number" class="form-control" placeholder="Enter your Number" name="number" ngModel required #number="ngModel">
-        <div class="alert alert-danger" [hidden]= "number.valid || number.pristine">
-          Number is required
+        <div class="form-group">
+          <md-input-container>
+            <input type="number" class="form-control" mdInput placeholder="Enter your Number" name="number" ngModel required #number="ngModel">
+            <div class="alert alert-danger" [hidden]= "number.valid || number.pristine">
+              Number is required
+            </div>
+          </md-input-container>
         </div>
-      </div>
-      <button class="btn btn-primary" type="submit" [disabled]="!userForm.valid"><i class="fa fa-floppy-o"></i> Submit</button>
-    </form>
+        <button class="btn btn-primary" type="submit" [disabled]="!userForm.valid"><i class="fa fa-floppy-o"></i> Submit</button>
+      </form>
+    </div>
   </div>
 </div>

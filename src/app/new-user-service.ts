@@ -47,7 +47,7 @@ export class NewUserService {
 
 	sendRegistrationMail(email) {
 		console.log(email);
-		this.http.post('/sendMail', email, this.options1).subscribe((data)=>{
+		this.http.get(`/sendMail/${email}`, this.options1).subscribe((data)=>{
 			if(data.json().success)
 				console.log("Mail sent");
 		})

@@ -79,9 +79,9 @@ export class UserDashboardComponent implements OnInit {
           if(res.success) {
             this.successMessage= res.msg;
             window.alert(this.successMessage);
-            location.reload();
-            //console.log(res.userModel.email);
-            //this.newUserService.sendRegistrationMail(res.userModel.email);
+            //location.reload();
+            console.log(res.userModel.email);
+            this.newUserService.sendRegistrationMail(res.userModel.email);
           }
         })
     }

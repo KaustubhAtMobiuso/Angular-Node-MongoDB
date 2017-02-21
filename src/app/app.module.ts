@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { ToasterModule, ToasterService} from 'angular2-toaster';
+import { MaterialModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { UserLoginComponent } from './user-login/user-login.component';
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    ToasterModule
+    ToasterModule,
+    MaterialModule
   ],
   providers: [NewUserService, AuthService],
   bootstrap: [AppComponent]

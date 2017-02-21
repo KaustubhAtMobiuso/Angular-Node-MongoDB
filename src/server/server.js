@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var email   = require('emailjs/email');
+var email   = require('nodemailer');
 
 var app = express();
 var UserModel = require('./userModel.js');
@@ -17,12 +17,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect('mongodb://test:test@ds149998.mlab.com:49998/demo');
 
 var db = mongoose.connection;
-console.log(db);
 mongoose.Promise = global.Promise;
 
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', function () {
 	console.log('Connected to MongoDB');
+});
+
+var send = email.createTransport({
+	service: 'gmail',
+    auth: {
+        user: 'kmkaustubh11@gmail.com',
+        pass: 'i love u'
+    }
 });
 
 app.post('/user', function (req, res) {
@@ -62,7 +69,7 @@ app.put('/updateProfile/:id', function(req, res) {
     UserModel.findOneAndUpdate({_id: req.params.id}, req.body, function(err) {
       if(err) return console.error(err);
       console.log("User Profile Updated Successfully");
-      res.json({success: true, msg: '"User Profile Updated Successfully'});
+      res.json({success: true, msg: 'User Profile Updated Successfully'});
 
     })
 });
@@ -95,30 +102,30 @@ app.put('/updatePassword', function(req, res) {
       res.json({success: true, msg: 'Password Updated Successfully Log In Now'});
     })
 });
-/*app.post('/sendMail', function(req, res){
-	console.log(req.body);
-	var server = email.server.connect({
-		user: 'kmkaustubh11@gmail.com',
-		password: 'i love u',
-		host: 'smtp.gmail.com',
-		ssl: true,
-		port: 587
-	});
-	server.send({
-		text: "Welcome to my site",
-		from: "kmkaustubh11@gmail.com",
-		to: req.body.email,
-		subject: "Welcome Mail"
-	}, function(err, message){
-		if(err)
-		console.log(err);
-		return res.json({success: true, msg: 'sent'});	
-	});
-});*/
 
- app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname,'/../../dist/index.html'));
-  });
+app.get('/sendMail/:email', function(req, res){
+	console.log(req.params.email);
+	var message = {
+		from:    "mean@gmail.com",
+		to:      req.params.email,
+		subject: "Welcome Mail",
+		//text: "Welcome to my site",
+		html: '<b>Thank you for contacting us we will respond you within 24hr.</b>'
+	};
+
+	send.sendMail(message, function (err, info) {
+		if(err) console.error(err);
+		else {
+			console.log('mail sent', info.messageId, info.response);
+			res.json({success: true, msg: 'Mail Sent Successfully'});
+		}
+	});
+	
+});
+
+app.get('/*', function(req, res) {
+	res.sendFile(path.join(__dirname,'/../../dist/index.html'));
+});
 
 app.listen(app.get('port'), function(){
 	console.log('Angular 2 Full Stack listening on port '+app.get('port'));
