@@ -1,11 +1,11 @@
 <div class="card">
   <h4 class="card-header">Welcome {{loggedInUser}} <i class="fa fa-user" aria-hidden="true"></i></h4>
+  <a [routerLink]="['./profile/']">Profile</a>
 </div>
 <div *ngIf="successMessage" class="alert alert-success">
   <strong>{{successMessage}}</strong>
 </div>
-
-<div class="card" >
+<div class="card" > 
   <div class="card-block">
     <table class="table table-bordered table-striped">
       <thead class="thead-default">
@@ -29,8 +29,11 @@
           <td>{{getuser.password}}</td>
           <td>{{getuser.number}}</td>
           <td>
-            <button class="btn btn-sm btn-warning" (click)="enableEditing(getuser)"><i class="fa fa-pencil"></i> Edit</button> <button class="btn btn-sm btn-danger" (click)="deleteUser(getuser)"><i class="fa fa-trash"></i> Delete</button>
+            <button class="btn btn-sm btn-warning" (click)="enableEditing(getuser)"><i class="fa fa-pencil"></i> Edit</button> <button  mwlConfirm (confirm)="confirmClicked(getuser)"
+              (cancel)="cancelClicked = true"
+                [(isOpen)]="isOpen"><i class="fa fa-trash"></i> Delete</button>
           </td>
+          
         </tr>  
       </tbody>
       <tbody *ngIf="isEditing">
@@ -57,7 +60,8 @@
       </tbody>
     </table>
   </div>
-</div> 
+</div>
+
 <div class="card" *ngIf="!isEditing">
   <h4 class="card-header">Add new user <i class="fa fa-user" aria-hidden="true"></i></h4>
   <div class="card-block">
@@ -94,3 +98,5 @@
     </form>
   </div>
 </div>
+
+<!-- https://www.npmjs.com/package/angular2-bootstrap-confirm -->

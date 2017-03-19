@@ -1,19 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { NewUserService } from '../new-user-service';
-import { ToasterModule, ToasterService} from 'angular2-toaster';
 import { AuthService } from '../auth.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
+import {ConfirmOptions, Position} from 'angular2-bootstrap-confirm';
+import {Positioning} from 'angular2-bootstrap-confirm/position';
 
+
+
+
+declare var $: any;
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.css']
+  styleUrls: ['./user-dashboard.component.css'],
+  providers: [ // you can pass both of these when bootstrapping the app to configure globally throughout your app
+    ConfirmOptions,
+     // this is required so you can use the bundled position service rather than rely on the `@ng-bootstrap/ng-bootstrap` module
+    {provide: Position, useClass: Positioning}
+  ]
 })
 export class UserDashboardComponent implements OnInit {
-  
-  toastDelete:any;
+  public isOpen: boolean = false;
 	user= [];
   isEditing= false;
   userUpdate = {};
@@ -22,10 +31,10 @@ export class UserDashboardComponent implements OnInit {
   successMessage: string;
 	constructor(
     private newUserService: NewUserService,
-    private toasterService: ToasterService,
     private authService: AuthService,
     private router: Router
   ) { 
+  
   }
 
     ngOnInit() {
@@ -81,27 +90,14 @@ export class UserDashboardComponent implements OnInit {
         })
     }
 
-    deleteUser(value) {
+    confirmClicked(value) {
       console.log(value);
-      if (window.confirm('Are you sure want to permanently delete this item ?')) {
         this.newUserService.deleteUserProfile(value).subscribe(
         res => {
           let pos = this.user.map(elem => { return elem._id; }).indexOf(value._id);
           this.user.splice(pos, 1);
-          this.deleteUserPopToast();
         },
         error => console.log(error)
       );
-    }
   }
-
-    deleteUserPopToast() {
-      this.toastDelete = {
-        body: 'User Deleted Successfully.',
-        showCloseButton: true,
-        tapToDismiss: false, 
-    };
-      this.toasterService.pop(this.toastDelete);
-    }
-
 }

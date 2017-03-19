@@ -12,6 +12,10 @@
   
 }
 
+.ng2-opd-popup-content-main {
+  margin-left: -64%;
+}
+
 .form-inline .form-control .name {
   width: 30%;
 }
