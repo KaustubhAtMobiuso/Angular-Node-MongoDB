@@ -71,31 +71,33 @@
         <input type="text" class="form-control" placeholder="Enter your Name" name="name" ngModel  #name="ngModel" required>
         <div class="alert alert-danger" [hidden]= "name.valid || name.pristine">
           Name is required
+        <div class="form-group">
+          <md-input-container>
+            <input type="email" class="form-control" mdInput placeholder="Enter your Email" name="email" ngModel #email="ngModel" required>
+            <div class="alert alert-danger" [hidden]= "email.valid || email.pristine">
+              Email is required
+            </div>
+          </md-input-container>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="Email">Email:</label>
-        <input type="email" class="form-control" placeholder="Enter your Email" name="email" ngModel #email="ngModel" required>
-        <div class="alert alert-danger" [hidden]= "email.valid || email.pristine">
-          Email is required
+        <div class="form-group">
+          <md-input-container>
+            <input type="password" class="form-control" mdInput placeholder="Enter your Password" name="password" ngModel #password="ngModel" required>
+            <div class="alert alert-danger" [hidden]= "password.valid || password.pristine">
+              Password is required
+            </div>
+          </md-input-container>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="Password">Password:</label>
-        <input type="password" class="form-control" placeholder="Enter your Password" name="password" ngModel #password="ngModel" required>
-        <div class="alert alert-danger" [hidden]= "password.valid || password.pristine">
-          Password is required
+        <div class="form-group">
+          <md-input-container>
+            <input type="number" class="form-control" mdInput placeholder="Enter your Number" name="number" ngModel required #number="ngModel">
+            <div class="alert alert-danger" [hidden]= "number.valid || number.pristine">
+              Number is required
+            </div>
+          </md-input-container>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="phoneNumber">PhoneNumber:</label>
-        <input type="number" class="form-control" placeholder="Enter your Number" name="number" ngModel required #number="ngModel">
-        <div class="alert alert-danger" [hidden]= "number.valid || number.pristine">
-          Number is required
-        </div>
-      </div>
-      <button class="btn btn-primary" type="submit" [disabled]="!userForm.valid"><i class="fa fa-floppy-o"></i> Submit</button>
-    </form>
+        <button class="btn btn-primary" type="submit" [disabled]="!userForm.valid"><i class="fa fa-floppy-o"></i> Submit</button>
+      </form>
+    </div>
   </div>
 </div>
 

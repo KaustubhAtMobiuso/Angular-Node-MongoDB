@@ -12,14 +12,22 @@ export class NewUserService {
 	subject:any;
 	message:any;
 	private headers = new Headers({ 'Content-Type': 'application/json', 'charset': 'UTF-8' });
+	private headers1 = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
   	private options = new RequestOptions({ headers: this.headers });
-	
+	private options1 = new RequestOptions({ headers: this.headers });
+
 	constructor(private http: Http) { }
 
 	postUserFormDetail(formValue) {
 		console.log("Request come");
 		console.log(formValue);
-		return this.http.post('/user', JSON.stringify(formValue), this.options).map(res => res.json())
+		return this.http.post('/user',
+			{
+				name: formValue.name,
+				email: formValue.email,
+				password: formValue.password,
+				number: formValue.number
+			}, this.options).map(res => res.json())
 	    .catch(error => {
 			return Observable.throw(error.json());
 		});
@@ -37,8 +45,13 @@ export class NewUserService {
 		return this.http.delete(`/deleteProfile/${userDelete._id}`, this.options);
 	}
 
-	sendRegistrationMail() {
-		this.apiKey = "api:key-0cc1063d11cf086abab167fdad203506";
+	sendRegistrationMail(email) {
+		console.log(email);
+		this.http.get(`/sendMail/${email}`, this.options1).subscribe((data)=>{
+			if(data.json().success)
+				console.log("Mail sent");
+		})
+		/*this.apiKey = "api:key-0cc1063d11cf086abab167fdad203506";
 		this.recipient ="kmkaustubh11@gmail.com";
 		this.subject ="Registration Done";
 		this.message ="Welcome Kaustubh to our site";
@@ -65,6 +78,7 @@ export class NewUserService {
                     this.message = "";
                 }, error => {
                     console.log(error);
-                });
+                });*/
+
 	}
 }

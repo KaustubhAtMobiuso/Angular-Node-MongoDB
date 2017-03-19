@@ -22,6 +22,7 @@ declare var $: any;
   ]
 })
 export class UserDashboardComponent implements OnInit {
+
   public isOpen: boolean = false;
 	user= [];
   isEditing= false;
@@ -29,12 +30,13 @@ export class UserDashboardComponent implements OnInit {
   userStatus:boolean;
   loggedInUser: any;
   successMessage: string;
+  birthday: any;
 	constructor(
     private newUserService: NewUserService,
     private authService: AuthService,
     private router: Router
   ) { 
-  
+
   }
 
     ngOnInit() {
@@ -85,7 +87,10 @@ export class UserDashboardComponent implements OnInit {
         res=>{
           if(res.success) {
             this.successMessage= res.msg;
-            this.newUserService.sendRegistrationMail();
+            window.alert(this.successMessage);
+            //location.reload();
+            console.log(res.userModel.email);
+            this.newUserService.sendRegistrationMail(res.userModel.email);
           }
         })
     }

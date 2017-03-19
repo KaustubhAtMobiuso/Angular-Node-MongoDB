@@ -1,37 +1,29 @@
-.collapse {
+.navbar-nav {
 	float: right;
- 
 }
 
 .save {
   margin-left: 1em;
 }
 
-.cancel {
-  
-  
-}
-
-.ng2-opd-popup-content-main {
-  margin-left: -64%;
-}
 
 .form-inline .form-control .name {
   width: 30%;
 }
 
-.email {
-  margin-left: 2em;
+.logo{
+  width: 80px;
+  margin-top: -17px;
+  margin-left: -16px;
 }
 
-.password {
-  margin-left: 2em;
+.example-form {
+  width: 500px;
 }
 
-.number {
-  margin-left: 2em;
+.example-full-width {
+  width: 100%;
 }
-
 
 #loader {
   position: absolute;
@@ -86,12 +78,16 @@
 body, html {
     height: 100%;
     background-repeat: no-repeat;
-    
+    background-color: #6f5499;
 }
 
 .card-container.card {
     max-width: 350px;
     padding: 40px 40px;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td, .table-striped>tbody>tr:nth-child(odd)>th {
+  background-color: #6f5499;
 }
 
 .btn {
@@ -107,28 +103,16 @@ body, html {
  * Card component
  */
 .card {
-    background-color: #F7F7F7;
     /* just in case there no content*/
-    padding: 20px 25px 30px;
     margin: 0 auto 25px;
     margin-top: 50px;
-    /* shadows and rounded borders */
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    font-family: monospace;
+    color: snow;
 }
 
 .profile-img-card {
     width: 96px;
     height: 96px;
-    margin: 0 auto 10px;
-    display: block;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
 }
 
 /*
